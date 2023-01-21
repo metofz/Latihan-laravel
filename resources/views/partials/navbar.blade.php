@@ -15,6 +15,9 @@
         <a class="nav-link {{ ($active === "posts") ? 'active' : ''}}" href="/posts">Blog</a>
         <a class="nav-link {{ ($active === "categories") ? 'active' : ''}}" href="/categories">Categories</a>
       </div>
+      <div class="navbar-nav me-auto">
+        <a class="nav-link {{ ($active === "login") ? 'active' : ''}}" href="/login"><i class="bi bi-box-arrow-in-right"></i> Sign In</a>
+      </div>
     </div>
   </div>
 </nav>
