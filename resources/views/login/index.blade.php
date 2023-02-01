@@ -3,22 +3,40 @@
 @section('container')
 <div class="row justify-content-center pt-4">
   <div class="col-md-4">
+
+    @if (session()->has('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ session('success') }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+
+    @if (session()->has('loginError'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ session('loginError') }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+
     <main class="form-signin w-100 m-auto">
-      <form>
-        <img class="mb-4 mx-auto d-block rounded" src="/img/logo.png" alt="" width="72" height="57">
-        <h1 class="h3 mb-3 fw-normal text-center">Please sign in</h1>
-    
+      <h1 class="h3 mb-3 fw-normal text-center">Please sign in</h1>
+      <form action="/login" method="POST">
+        @csrf
         <div class="form-floating">
-          <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+          <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" id="email" placeholder="name@example.com" autofocus required value="{{ old('email') }}">
           <label for="floatingInput">Email address</label>
+          @error('email')
+          <div class="invalid-feedback">
+            {{ $message }}
+          </div>
+          @enderror
         </div>
         <div class="form-floating">
-          <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-          <label for="floatingPassword">Password</label>
+          <input type="password" class="form-control" name="password" id="password" placeholder="Password" required>
+          <label for="password">Password</label>
         </div>
         <button class="w-100 btn btn-lg btn-dark mb-4" type="submit">Sign in</button>
         <small class="text-center d-block">New Account? <a href="/register">Create an account</a></small>
-        <p class="mt-5 mb-3 text-muted text-center">&copy; 2022</p>
       </form>
     </main>
   </div>

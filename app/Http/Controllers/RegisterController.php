@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\MessageBag;
-use Illuminate\Validation\Rules\Password;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
@@ -19,7 +19,7 @@ class RegisterController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'name' => ['required', 'regex:/^[a-zA-Z\s]*$/'],
             'username' => 'required|min:3|max:255|unique:users',
             'email' => 'required|email:dns|unique:users',
@@ -35,6 +35,15 @@ class RegisterController extends Controller
             // ]
             // 'password_confirmation' => 'required|same:password'
         ]);
-        dd('registrasi berhasil!!');
+
+        // Hashing Password :
+        // $validatedData['password'] = bcrypt($validatedData['password']);
+        $validatedData['password'] = Hash::make($validatedData['password']);
+
+        User::create($validatedData);
+
+        // $request->session()->flash('success', 'Sign Up successfully! Please Sign In');
+
+        return redirect('/login')->with('success', 'Sign Up successfully! Please Sign In');
     }
 }
